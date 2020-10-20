@@ -6,3 +6,6 @@
 [解析器](https://github.com/iTassel/Learning_From_Skr/tree/master/解析器)  
 [调试器](https://github.com/iTassel/Learning_From_Skr/tree/master/调试器)  
 
+### 2020-10月
+Day1: 学习了一下Arm架构下的汇编指令,大致理解了下传参过程和调用过程,以及如果用ROP做题
+
