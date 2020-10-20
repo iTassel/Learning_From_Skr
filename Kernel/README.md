@@ -9,9 +9,9 @@
 
 [ucore_lab4](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab4/)
 
-[ucore_lab4](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab5/)
+[ucore_lab5](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab5/)
 
-[ucore_lab4](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab6/)
+[ucore_lab6](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab6/)
 
 #### CSAPP 前置
 [lab](https://github.com/iTassel/Learning_From_Skr/tree/master/ucore_Kernel/CSAPP)
