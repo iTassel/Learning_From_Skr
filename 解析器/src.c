@@ -1,0 +1,250 @@
+//gcc src.c -o main
+#define _GNU_SOURCE         /* See feature_test_macros(7) */
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<malloc.h>
+#include<elf.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+
+#define Dynsym_Num 0
+#define Symtab_Num 1
+	
+void print_Sym(const u_char *ELF_buf)
+{
+	size_t SHT_offset;
+	size_t i, j;
+	size_t n;
+	size_t count[2];
+	Elf64_Ehdr *EHdr; //ELF Header
+	Elf64_Shdr *SecHdr; //Section Header
+	Elf64_Shdr *SecHdr_Entry;
+	Elf64_Shdr *_SecHdr_DynSym = NULL; //Dynsym Section
+	Elf64_Shdr *_SecHdr_Symtab = NULL; //Symtab Section
+	Elf64_Sym  *SymHdr; // Symbols Header
+	u_char *Sec_Name_Table;
+	u_char *SymStrTable;
+	u_char *DynStrTable;
+	EHdr = (Elf64_Ehdr*)ELF_buf;
+	n =  EHdr->e_shnum;
+	SHT_offset = EHdr->e_shoff;
+	SecHdr_Entry = (Elf64_Shdr*)(ELF_buf + SHT_offset +  sizeof(Elf64_Shdr) * (EHdr->e_shstrndx )); //Entry Section Header
+	Sec_Name_Table = (u_char *)(ELF_buf + SecHdr_Entry->sh_offset); //Section item name table address
+	for (i = 0; i < n; ++i)
+	{
+		SecHdr = (Elf64_Shdr*)(ELF_buf + SHT_offset +  i * sizeof(Elf64_Shdr));
+		// GET the .strtab address
+		if (!strcmp( Sec_Name_Table+SecHdr->sh_name, ".strtab")) //GET the string tab
+		{
+			SymStrTable = (u_char *)(ELF_buf + SecHdr->sh_offset);
+		}
+		else if(!strcmp( Sec_Name_Table+SecHdr->sh_name, ".dynstr")) // GET the dynamic string tab
+		{
+			DynStrTable = (u_char *)(ELF_buf + SecHdr->sh_offset); 
+		}
+		else if(!strcmp( Sec_Name_Table+SecHdr->sh_name, ".dynsym")) //Get the dynamic symbols tab
+		{
+			_SecHdr_DynSym = (Elf64_Shdr *)SecHdr;
+			count[Dynsym_Num] =  (_SecHdr_DynSym->sh_size / _SecHdr_DynSym->sh_entsize);
+		}
+		else if(!strcmp( Sec_Name_Table+SecHdr->sh_name, ".symtab")) // Get the symbols tab
+		{
+			_SecHdr_Symtab = (Elf64_Shdr *)SecHdr;
+			count[Symtab_Num] =  (_SecHdr_Symtab->sh_size / _SecHdr_Symtab->sh_entsize);
+		}
+	}
+	if(_SecHdr_DynSym)
+	{
+		printf("Symbol table '.dynsym' contains %d entries:\n",count[Dynsym_Num]);
+		printf("\tn:\tValue\t\tSize\tType\tBind\t Name\n");
+		for ( j = 0; j < count[Dynsym_Num]; ++j)
+		{
+				
+			SymHdr = (Elf64_Sym*)(ELF_buf + _SecHdr_DynSym->sh_offset + j * (sizeof(Elf64_Sym)));
+			printf("\t%2d: ",j);
+			printf(" %#016x\t",SymHdr->st_value );
+			printf("%04x\t",SymHdr->st_size );
+			switch(ELF32_ST_TYPE(SymHdr->st_info))
+			{
+				case STT_NOTYPE:
+					printf("NOTYPE\t");
+					break;
+				case STT_OBJECT:
+					printf("OBJECT\t");
+					break;
+				case STT_FUNC:
+					printf("FUNC\t");
+					break;
+				case STT_SECTION:
+					printf("SECTION\t");
+					break;
+				case STT_FILE:
+					printf("FILE\t");
+					break;
+				case STT_LOPROC:
+					printf("OBJECT\t");
+					break;
+				case STT_HIPROC:
+					printf("HIPROC");
+					break;
+				default:
+					printf("%d ",ELF32_ST_TYPE(SymHdr->st_info));
+					printf("Unknown\t");
+					break;
+			}
+			switch(ELF32_ST_BIND(SymHdr->st_info))
+			{
+				case STB_LOCAL:
+					printf("LOCAL\t");
+					break;
+				case STB_GLOBAL:
+					printf("GLOBAL\t");
+					break;
+				case STB_WEAK:
+					printf("WEAK\t");
+					break;
+				case STB_LOPROC:
+					printf("OBJECT\t");
+					break;
+				case STB_HIPROC:
+					printf("HIPROC");
+					break;
+				default:
+					printf("Unknown\t");
+					break;
+			}
+			printf(" %s\n",DynStrTable+SymHdr->st_name );
+		}
+	}
+	if(_SecHdr_Symtab)
+	{
+		printf("Symbol table '.symtab' contains %d entries:\n",count[Symtab_Num]);
+		printf("\tn:\tValue\t\tSize\tType\tBind\t Name\n");
+		for ( j = 0; j < count[Symtab_Num]; ++j)
+		{
+			SymHdr = (Elf64_Sym*)(ELF_buf + _SecHdr_Symtab->sh_offset + j * (sizeof(Elf64_Sym)));
+			printf("\t%-2d: ",j);
+			printf(" %#016x\t",SymHdr->st_value );
+			printf("%04x\t",SymHdr->st_size );
+			switch(ELF32_ST_TYPE(SymHdr->st_info))
+			{
+				case STT_NOTYPE:
+					printf("NOTYPE\t");
+					break;
+				case STT_OBJECT:
+					printf("OBJECT\t");
+					break;
+				case STT_FUNC:
+					printf("FUNC\t");
+					break;
+				case STT_SECTION:
+					printf("SECTION\t");
+					break;
+				case STT_FILE:
+					printf("FILE\t");
+					break;
+				case STT_LOPROC:
+					printf("OBJECT\t");
+					break;
+				case STT_HIPROC:
+					printf("HIPROC");
+					break;
+				default:
+					printf("Unknown\t");
+					break;
+			}
+			switch(ELF32_ST_BIND(SymHdr->st_info))
+			{
+				case STB_LOCAL:
+					printf("LOCAL\t");
+					break;
+				case STB_GLOBAL:
+					printf("GLOBAL\t");
+					break;
+				case STB_WEAK:
+					printf("WEAK\t");
+					break;
+				case STB_LOPROC:
+					printf("OBJECT\t");
+					break;
+				case STB_HIPROC:
+					printf("HIPROC");
+					break;
+				default:
+					printf("Unknown\t");
+					break;
+			}
+			printf("%s\n",SymStrTable+SymHdr->st_name );
+		}
+
+	}
+	
+
+}
+
+void usage()
+{
+	fprintf(stderr,"Follow is the usages:\n");
+	fprintf(stderr,"\t-s > print all symbols in terminal\n");
+	exit(0);
+}
+void init_IO()
+{
+	setvbuf(stdin,0LL,2,0LL);
+	setvbuf(stdout,0LL,2,0LL);
+	setvbuf(stderr,0LL,2,0LL);
+}
+int main(int argc,char *argv[])
+{
+	init_IO();
+	if(argc < 3)	usage();
+	FILE *stream = fopen(argv[2],"rb");
+	if(!stream)
+	{
+		fprintf(stderr,"File Not Found :(\n");
+		usage();
+	}
+	fseek(stream,0,SEEK_END); // ** GET FILE_SIZE
+	size_t filesz = ftell(stream);
+	fseek(stream,0,SEEK_SET);
+	char *buf = calloc(filesz + 0x10,1);
+	fread(buf,filesz,1,stream);
+	fclose(stream);
+	if(memcmp(buf,"\177ELF",4))
+	{
+		fprintf(stderr,"ELF Magic Not Found :(\n");
+		exit(0);
+	}
+	char version = buf[4];
+	if(version == 2)
+	{
+		fprintf(stdout,"File class: 64-bit :)\n");
+		struct Elf64_Ehdr *Ehdr = (struct Elf64_Ehdr *)calloc(sizeof(Elf64_Ehdr),1);
+		memcpy((char*)Ehdr,buf,sizeof(Elf64_Ehdr));
+		
+	}
+	else if(version == 1)
+	{
+		fprintf(stdout,"File class: 32-bit :)\n");
+		struct Elf32_Ehdr *Ehdr = (struct Elf32_Ehdr *)calloc(sizeof(Elf32_Ehdr),1);
+		memcpy((char*)Ehdr,buf,sizeof(Elf32_Ehdr));
+	}
+	else
+	{
+		fprintf(stderr,"File Class Not Found :(\n");
+		exit(0);
+	}
+	char op = *((char*)strstr(argv[1],"-") + 1);
+	switch(op)
+	{
+		case 's':
+			print_Sym(buf);
+			break;
+		default:
+			usage();
+	}
+}
