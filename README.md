@@ -41,9 +41,12 @@
 <details>
 <summary>2020-10-20</summary>
 
-  写完调试器不知道做什么,然后Windows还不知道如何入门,就学习了一下Arm架构下的汇编指令,大致理解了下传参过程和调用过程,以及如何构造ROP利用
+  - 写完调试器不知道做什么,然后Windows还不知道如何入门,就学习了一下Arm架构下的汇编指令,大致理解了下传参过程和调用过程,以及如何构造ROP利用
   </details>
   
-  
+<details>
+<summary>2020-10-21</summary>
 
+  - 学习了一下CodeQL,正在加紧学习
+  </details>
 
