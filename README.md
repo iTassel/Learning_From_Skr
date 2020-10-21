@@ -13,7 +13,7 @@
 <summary>GoogleCTF_2020</summary>
 
 + [x] [echo](https://github.com/iTassel/Learning_From_Skr/tree/master/Google_CTF2020)  
-  1. 编译的时候利用asan命令可以把UAF洞找到,然后利用此UAF洞以及爆破半个字节构造堆上任意写  
+  - 编译的时候利用asan命令可以把UAF洞找到,然后利用此UAF洞以及爆破半个字节构造堆上任意写  
   
   </details>
 
