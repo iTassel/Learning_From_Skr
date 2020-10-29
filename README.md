@@ -50,3 +50,33 @@
   - 学习了一下CodeQL,正在加紧学习
   </details>
 
+<details>
+<summary>2020-10-24</summary>
+
+  - ByteCTF 2020
+  </details>
+
+<details>
+<summary>2020-10-25</summary>
+
+  - ByteCTF 2020 Day2
+  </details>
+
+<details>
+<summary>2020-10-26</summary>
+
+  - 折腾Linux 0.11源码的编译 一整天
+  </details>
+
+<details>
+<summary>2020-10-27</summary>
+
+  - 阅读Linux 0.11 内核完全注释
+  </details>
+
+<details>
+<summary>2020-10-28</summary>
+
+  - 做[离散实验报告1](https://github.com/iTassel/NJUPT_Discrete_Math/blob/master/exp1)
+  </details>
+
