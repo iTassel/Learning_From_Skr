@@ -80,3 +80,27 @@
   - 做[离散实验报告1](https://github.com/iTassel/NJUPT_Discrete_Math/blob/master/exp1)
   </details>
 
+<details>
+<summary>2020-10-29</summary>
+
+  - 阅读Linux 0.11内核完全注释
+  </details>
+
+
+<details>
+<summary>2020-10-30</summary>
+
+  - X-NUCA
+  </details>
+
+<details>
+<summary>2020-10-31</summary>
+
+  - CTF、X-NUCA
+  </details>
+
+<details>
+<summary>2020-11-01</summary>
+
+  - CTF
+  </details>
