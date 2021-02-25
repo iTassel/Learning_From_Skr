@@ -1,4 +1,4 @@
-因为考试+复习有点跟不走了,所以内核部分先闲置,明年开学之前,重新复习一遍Linux Kernel和读完Windows Internal :(
+未完成,lab7 和 lab8 抽空补
 ### ucore Notes
 
 [ucore_lab1](https://github.com/iTassel/Learning_From_Skr/tree/master/Kernel/lab1/)
@@ -13,5 +13,4 @@
 
 [ucore_lab6](https://github.com/iTassel/Learning_From_Skr/blob/master/Kernel/lab6/)
 
-#### CSAPP 前置
-[lab](https://github.com/iTassel/Learning_From_Skr/tree/master/ucore_Kernel/CSAPP)
+
